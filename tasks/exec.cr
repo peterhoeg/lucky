@@ -13,7 +13,7 @@ class Lucky::Exec < LuckyTask::Task
   switch :once, "Don't loop. Only run once.", shortcut: "-o"
 
   Habitat.create do
-    setting editor : String = "vim"
+    setting editor : String = ENV.fetch("EDITOR", "vim")
     setting template_path : String = "#{__DIR__}/exec_template.cr.template"
   end
 
