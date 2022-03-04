@@ -1,7 +1,15 @@
 #!/bin/sh -eu
 
+if command -v docker-compose > /dev/null; then
+    compose=docker-compose
+elif command -v podman-compose > /dev/null; then
+    compose=podman-compose
+else
+    printf 'Neither docker-compose nor podman-compose are installed.\n'
+    exit 1
+fi
 
-COMPOSE="docker-compose run --rm app"
+COMPOSE="$compose run --rm app"
 
 printf "\nrunning specs with 'crystal spec'\n\n"
 $COMPOSE crystal spec "$@"

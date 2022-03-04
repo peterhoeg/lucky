@@ -1,11 +1,15 @@
 #!/bin/sh -eu
 
-if ! command -v docker-compose > /dev/null; then
-    printf 'Docker and docker-compose are not installed.\n'
-    printf 'See https://docs.docker.com/compose/install/ for install instructions.\n'
+if command -v docker-compose > /dev/null; then
+    compose=docker-compose
+elif command -v podman-compose > /dev/null; then
+    compose=podman-compose
+else
+    printf 'Neither docker-compose nor podman-compose are installed.\n'
+    printf 'See https://docs.docker.com/compose/install/ or https://github.com/containers/podman-compose for install instructions.\n'
     exit 1
 fi
 
-docker-compose build
+$compose build
 
-docker-compose run app shards update
+$compose run app shards update
